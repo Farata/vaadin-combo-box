@@ -90,12 +90,15 @@
         this.$.selector.style.maxHeight = this._maxHeight(targetRect);
 
         var overlayRect = this.getBoundingClientRect();
-
-        this._translateX = targetRect.left - overlayRect.left + (this._translateX || 0);
-        this._translateY = targetRect.top - overlayRect.top + (this._translateY || 0) +
-          this._verticalOffset(overlayRect, targetRect);
-
-        this.translate3d(this._translateX + 'px', this._translateY + 'px', '0');
+        if (overlayRect.width === 0 && overlayRect.height === 0) {
+          this.style.left =  targetRect.left;
+          this.style.top =  this._verticalOffset(overlayRect, targetRect);
+        } else {
+          this._translateX = targetRect.left - overlayRect.left + (this._translateX || 0);
+          this._translateY = targetRect.top - overlayRect.top + (this._translateY || 0) +
+              this._verticalOffset(overlayRect, targetRect);
+          this.translate3d(this._translateX + 'px', this._translateY + 'px', '0');
+        }
 
         this.style.width = this.positionTarget.clientWidth + 'px';
       }
